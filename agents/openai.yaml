@@ -1,0 +1,7 @@
+interface:
+  display_name: "川云添 · 自动剪辑 Pro"
+  short_description: "把口播做成全屏动效舞台，先审方案与关键帧，再渲染可验证的成片"
+  icon_small: "./assets/brand-mark.svg"
+  icon_large: "./assets/brand-mark.svg"
+  brand_color: "#34D4BF"
+  default_prompt: "使用 $chuanyuntian-auto-edit-pro 检查我的视频与对应 SRT，保留原片和原声，先给出全屏舞台包装方案；批准后自动进入 Gate B 和 C，最终获得 Gate D 批准才渲染。"

@@ -1,0 +1,17 @@
+川云添 · 自动剪辑 Pro
+Brand distribution maintained by 川云添 (cytxnyu).
+Repository: https://github.com/cytxnyu/chuanyuntian-auto-edit-pro
+
+Derived from AI Self-Media Video Packaging Skill / Nana AI:
+https://github.com/zhouyuechuan2025-ui/ai-self-media-video-packaging-skill
+Original copyright: 2026 Nana AI. See LICENSE for the preserved MIT terms.
+This edition adds the 川云添 brand, distribution metadata, installation
+instructions and public-release packaging. It does not claim sole original
+authorship of the upstream orchestration or visual component code.
+
+Remotion is a dependency with its own license and commercial-use terms:
+https://www.remotion.dev/license
+HyperFrames is an optional adapter dependency with separate upstream terms.
+Names, portraits, logos, trademarks and third-party media are not granted by
+the MIT license unless an individual file explicitly says otherwise.
+Upstream personal examples, portraits and contact QR codes are not included.
