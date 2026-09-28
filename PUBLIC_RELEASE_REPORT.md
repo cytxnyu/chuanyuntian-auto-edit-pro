@@ -1,4 +1,4 @@
-# 川云添 · 自动剪辑 Pro 1.0.0 — 发布检查
+# 川云添 · 自动剪辑 Pro 1.0.1 — 发布检查
 
 检查日期：2026-09-28。
 
@@ -6,19 +6,23 @@
 
 - Skill 调用名：`chuanyuntian-auto-edit-pro`；显示名称：川云添 · 自动剪辑 Pro。
 - 新增品牌横幅、图标、中文安装说明、可复制提示词与三份使用文档。
-- 保留原 Skill 的视觉系统、渲染逻辑与 Gate A 批准 → B 自动进入 C → Gate D 批准流程。
+- 保留既定视觉系统、渲染逻辑与 Gate A 批准 → B 自动进入 C → Gate D 批准流程。
 - 发布包仅包含代码、说明、测试和合成 SRT；不包含私人视频、真人示例、联系二维码、缓存或本地工程。
-- 原 MIT 许可和 Nana AI 版权已保留，派生说明见 [NOTICE](NOTICE)。
+- 项目名称、入口、首页和说明统一使用川云添品牌；代码许可见 [LICENSE](LICENSE)，依赖说明见 [NOTICE](NOTICE)。
 - Node.js 最低版本设为 24，CI 同步使用 Node 24 并安装中文字体。
 - 锁文件中 `fast-uri` 从 3.1.5 更新至 3.1.8，`js-yaml` 从 4.3.1 更新至 4.3.2；其他运行库版本不变。
 - 文本统一为 LF 并整理末尾空行，使 Git 提交文件与 [SHA256SUMS.txt](SHA256SUMS.txt) 一致。
 - 修正一项测试中的 Windows 路径硬编码，使用 `node:path.join` 生成预期路径；不改变运行时输出逻辑。
 
-## 本地实测
+## 1.0.1 文档与品牌更新
+
+本次只调整品牌介绍、项目文案、许可信息的展示位置、版本号及相关测试；全部 72 个 `packages/scripts` 文件与 1.0.0 保持逐字节一致。渲染参数、视觉组件、审批分支和输入输出逻辑均未修改。
+
+## 1.0.0 安装与功能实测记录
 
 | 检查 | 实测结果 |
 |---|---|
-| 原安装基线 `npm test -- --reporter=dot` | 20 文件、153 项通过 |
+| 安装基线 `npm test -- --reporter=dot` | 20 文件、153 项通过 |
 | 隔离目录 `npm ci` | 成功，未复用原 node_modules |
 | 新安装 `npm test -- --reporter=dot` | 20 文件、155 项通过 |
 | 新安装 TypeScript 与 Remotion 构建 | 成功，找到 VideoPackaging composition |

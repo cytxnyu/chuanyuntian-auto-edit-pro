@@ -77,13 +77,23 @@ describe('public release documentation', () => {
     expect(read('README.md')).toContain('八种不同语义结构');
   });
 
-  it('keeps upstream credit and third-party terms without redistributing old personal examples', () => {
+  it('keeps project-facing branding consistent and retains required notices in the license', () => {
     const markdown = read('README.md');
-    expect(markdown).toContain('Nana AI');
+    expect(markdown).toContain('川云添（cytxnyu）');
+    expect(markdown).not.toContain('品牌化整理');
     expect(markdown).toContain('MIT');
     expect(markdown).toContain('[NOTICE](NOTICE)');
-    expect(markdown).toContain('[LICENSE](LICENSE)');
-    expect(read('NOTICE')).toContain('Nana AI');
+    expect(markdown).toMatch(/\[[^\]]+\]\(LICENSE\)/);
+    expect(read('NOTICE')).toContain('Maintained and published by 川云添');
+    const copyrightOwners = [...read('LICENSE').matchAll(/^Copyright \(c\) \d{4} (.+)$/gm)].map((match) => match[1]);
+    expect(copyrightOwners).toHaveLength(2);
+    expect(copyrightOwners).toContain('川云添 (cytxnyu)');
+    for (const owner of copyrightOwners.filter((name) => name !== '川云添 (cytxnyu)')) {
+      for (const document of [...publicDocs, 'SKILL.md', 'NOTICE', 'PUBLIC_RELEASE_REPORT.md']) {
+        expect(read(document), document).not.toContain(owner);
+      }
+    }
+    expect(read('LICENSE')).toContain('The above copyright notice and this permission notice shall be included in all');
     expect(read('LICENSE')).toContain('MIT License');
     for (const document of publicDocs) {
       expect(read(document)).not.toMatch(/examples\/auto-editing-0|docs\/assets\/(?:contact|previews)|wechat-qr/);

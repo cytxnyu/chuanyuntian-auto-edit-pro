@@ -5,7 +5,7 @@ description: 川云添的口播视觉包装 Skill。将真人视频与 SRT 制�
 
 # 川云添 · 自动剪辑 Pro
 
-由 [川云添（cytxnyu）](https://github.com/cytxnyu) 维护的品牌发行版，基于 MIT 上游项目；来源与依赖说明见 [NOTICE](NOTICE)。安装与调用示例见 [README.md](README.md)。
+由 [川云添（cytxnyu）](https://github.com/cytxnyu) 维护的口播视觉包装项目。安装与调用示例见 [README.md](README.md)，依赖说明见 [NOTICE](NOTICE)。
 
 Turn center-presenter talking-head content plus SRT into a reproducible, semantically directed packaging project. Accept either SRT-only transparent-overlay output or video-plus-SRT composite output. Preserve the source edit and voice. Preserve readable meaning when intentionally covering burned-in captions: briefly hand off to relevant keywords, then restore subtitle continuity.
 
@@ -59,7 +59,7 @@ Select by spoken meaning, never by palette rotation:
 ## Non-negotiable visual rules
 
 - Maintain one continuous source video/audio track. Do not silently recut or reorder it.
-- **The whole screen is the stage / 整个屏幕都是特效和组件的舞台.** Keep the original palettes, materials, typography, ten semantic structures and four-gate workflow; change presentation freedom, not the aesthetic system.
+- **The whole screen is the stage / 整个屏幕都是特效和组件的舞台.** Keep the established palettes, materials, typography, ten semantic structures and four-gate workflow; change presentation freedom, not the aesthetic system.
 - Default new work to whole-screen-stage composition. Position and scale graphics by meaning, gesture and composition: foreground coverage, translucent overlays, opaque full-screen, surrounding graphics with a clear person, and front/behind-subject crossings may all be mixed. There is no mandatory center exclusion, fixed side-card size cap, or forced left/right alternation.
 - Deliberate partial or complete face/body coverage is valid. Make the reason, duration and reveal intentional; accidental unreadable piles remain a composition failure. Large is permitted, not compulsory, and rich variation does not mean random effects or palette cycling.
 - Stage interaction must show subject, action and consequence: a spoken command can trigger assembly; an observed point, lift or sweep can summon, support or move a component. Inspect source frames before matching a real hand or body action; SRT alone is not gesture evidence.
@@ -79,7 +79,7 @@ Select by spoken meaning, never by palette rotation:
 
 ## Presentation configuration
 
-Read [Whole-screen stage](references/whole-screen-stage.md) when designing size, opacity, gesture keyframes, depth crossings or keyword handoffs. This is the sole presentation extension; it does not replace the original visual language or approvals.
+Read [Whole-screen stage](references/whole-screen-stage.md) when designing size, opacity, gesture keyframes, depth crossings or keyword handoffs. This is the sole presentation extension; it does not replace the established visual language or approvals.
 
 Use this Skill and its current references for new jobs. Historical implementation plans and private examples are not distributed in this release.
 

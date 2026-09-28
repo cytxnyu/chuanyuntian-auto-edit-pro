@@ -1,6 +1,6 @@
-# 全屏舞台：只放开表现形式，延续原版风格
+# 川云添 · 自动剪辑 Pro：全屏舞台设计
 
-整个屏幕都是特效和组件的舞台。人物不是必须避开的障碍，而是可以与图形共同表演的主体。原版配色、字体、卡片材质、十种语义结构、原声和四阶段工作流保持不变。
+整个屏幕都是特效和组件的舞台。人物不是必须避开的障碍，而是可以与图形共同表演的主体。既定配色、字体、卡片材质、十种语义结构、原声和四阶段工作流保持不变。
 
 ## 导演原则
 
@@ -18,7 +18,7 @@
 
 - `beat.stage.x/y/width/height`：相对输出画幅的比例，x/y 是左上位置；可以越过边界，尺寸没有固定最大值。
 - `scale/rotation/opacity`：整体缩放、角度、透明度；`surfaceOpacity` 仅控制组件底面。
-- `surface`：`template` 延续原版底面，`transparent` 去掉公共底面，`opaque` 使用原版实底。
+- `surface`：`template` 使用组件底面，`transparent` 去掉公共底面，`opaque` 使用组件实底。
 - `depth`：`front` 或 `behind-subject`。前后切换还可写在 `keyframes` 中；切换需设计遮挡交接，避免突跳。
 - `keyframes[].frame`：**镜头内局部帧**，从 0 开始；可逐帧插值位置、尺寸、缩放、角度及透明度。
 - `interaction`：`speech` 或 `gesture`。后者必须带 `gesture.observedFrames`（**源视频全局帧**）与真实观察描述。

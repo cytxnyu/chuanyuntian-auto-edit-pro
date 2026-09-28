@@ -11,7 +11,7 @@
 ## Whole-screen stage
 
 - All canvas positions, including the center and caption area, are available for intentional composition.
-- Retain the original component/palette language. Use large foreground, translucent, opaque, surrounding and depth-crossing treatments when appropriate; a person may be partially or fully covered.
+- Retain the established component/palette language. Use large foreground, translucent, opaque, surrounding and depth-crossing treatments when appropriate; a person may be partially or fully covered.
 - Inspect actual body/hand motion before assigning a gesture-triggered action. Record source frames and the intended contact/response.
 - Use a synchronized transparent person layer for behind-subject effects. Verify hair, fingers, silhouette, alignment and transition frames; do not replace the underlying background.
 - When subtitles are briefly covered, timed readable keywords must carry their meaning; resume readable subtitles afterward.

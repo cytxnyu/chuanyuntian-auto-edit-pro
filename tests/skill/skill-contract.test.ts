@@ -107,7 +107,8 @@ describe('public Skill contract', () => {
       expect(existsSync(file), file).toBe(true);
     }
     expect(readme).toContain('https://github.com/cytxnyu/chuanyuntian-auto-edit-pro');
-    expect(readme).toContain('Nana AI');
+    expect(readme).toContain('川云添（cytxnyu）');
+    expect(readFileSync('LICENSE', 'utf8')).toContain('Copyright (c) 2026 川云添 (cytxnyu)');
     expect(readme).toContain('npm ci');
     expect(readme).toContain('$chuanyuntian-auto-edit-pro');
     expect(readme).toContain('4 秒');

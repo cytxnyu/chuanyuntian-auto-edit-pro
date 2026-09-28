@@ -4,13 +4,13 @@ These checks apply to every real invocation. Passing unit tests, typecheck, buil
 
 ## 1. Intentional whole-screen presentation
 
-Judge the composition, not whether it protects a fixed center lane. Large foreground graphics, translucent face overlap, opaque full-screen, a clear presenter surrounded by graphics, and front/behind crossings are permitted. A beat can move between these states. Preserve original component aesthetics; do not mechanically cycle treatments.
+Judge the composition, not whether it protects a fixed center lane. Large foreground graphics, translucent face overlap, opaque full-screen, a clear presenter surrounded by graphics, and front/behind crossings are permitted. A beat can move between these states. Preserve established component aesthetics; do not mechanically cycle treatments.
 
 Record the purpose and reveal timing of coverage. Real gesture interaction uses observed source frames. Behind-subject effects use aligned transparent person frames; inspect matte edges and depth-order transitions. A merely translucent source duplicate does not pass as depth interaction.
 
 ## 2. Content-fit at any scale
 
-There is no fixed maximum card height or side-only rule. Keep headings, items and takeaways readable and intentionally related; remove decorative empty regions. Big components can cross the center or leave the frame during motion, but their intended reading state must be legible. Preserve original palettes and component identities.
+There is no fixed maximum card height or side-only rule. Keep headings, items and takeaways readable and intentionally related; remove decorative empty regions. Big components can cross the center or leave the frame during motion, but their intended reading state must be legible. Preserve established palettes and component identities.
 
 ## 3. Subtitle / keyword handoff
 

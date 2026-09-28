@@ -18,7 +18,7 @@ The content contract determines the layout. A palette change does not create a n
 ## Placement contract
 
 - For new stage scenes, every pixel is available. Semantic contracts determine content, not a mandatory left/right/center exclusion.
-- Reuse the original ten structures and their visual language; choose free scale, position, opacity and person-layer ordering for the actual meaning and gesture.
+- Use these ten structures and their visual language; choose free scale, position, opacity and person-layer ordering for the actual meaning and gesture.
 - Brief subtitle cover uses an explicit keyword handoff; preserve continuity afterward.
 - Retain legacy placement for saved storyboards without stage configuration.
 - For videos over 30 seconds, use at least eight semantically justified structures. Never force a structure solely to increase the count.
