@@ -1,9 +1,9 @@
 {
   "name": "chuanyuntian-auto-edit-pro",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
-  "description": "川云添 · 自动剪辑 Pro — 面向真人口播的全屏舞台视觉包装 Agent Skill。",
+  "description": "川云添 · 自动剪辑 Pro — 71 种固定种子混合风格、10 种语义结构的全屏舞台口播视觉包装 Agent Skill。",
   "license": "MIT",
   "engines": {
     "node": ">=24"
@@ -18,7 +18,11 @@
     "example:synthetic": "tsx scripts/package-video.ts --video examples/synthetic-horizontal/input.mp4 --srt examples/synthetic-horizontal/input.srt --out examples/synthetic-horizontal/run --renderer remotion",
     "checksums": "node scripts/generate-checksums.mjs",
     "verify:public": "node scripts/verify-public-repo.mjs",
-    "verify:all": "npm test && npm run typecheck && npm run build && npm run verify:public"
+    "verify:all": "npm test && npm run typecheck && npm run build && npm run verify:public",
+    "demo:styles": "tsx scripts/demo-styles.ts",
+    "preview:styles": "node scripts/serve-style-demos.mjs",
+    "verify:styles": "tsx scripts/verify-style-renderers.ts",
+    "list:styles": "tsx scripts/list-styles.ts"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.507",

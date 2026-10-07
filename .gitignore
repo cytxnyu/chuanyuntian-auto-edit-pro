@@ -35,3 +35,8 @@ audit/
 *.webm
 *.wav
 *.mp3
+
+examples/style-demos/rendered/
+
+# Local integration reports and bundles are not source distribution.
+/evidence/

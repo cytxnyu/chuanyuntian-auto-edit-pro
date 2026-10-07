@@ -95,8 +95,9 @@ describe('StoryboardSchema', () => {
     expect(new Set(MOTION_PRIMITIVES).size).toBe(10);
     expect(ILLUSTRATION_SCENARIOS).toHaveLength(6);
     expect(new Set(ILLUSTRATION_SCENARIOS).size).toBe(6);
-    expect(PALETTE_IDS).toHaveLength(6);
-    expect(new Set(PALETTE_IDS).size).toBe(6);
+    expect(PALETTE_IDS).toHaveLength(77);
+    expect(new Set(PALETTE_IDS).size).toBe(77);
+    expect(PALETTE_IDS.slice(0, 6)).toEqual(['deep-ocean', 'violet-sunset', 'teal-signal', 'editorial-cream', 'acid-action', 'paper-sketch']);
     expect(DIRECTOR_ROLES).toContain('hook');
     expect(DIRECTOR_ROLES).toContain('evidence');
   });

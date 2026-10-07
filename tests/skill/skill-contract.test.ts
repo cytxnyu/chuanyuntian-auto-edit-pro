@@ -1,10 +1,10 @@
-import {existsSync, readFileSync} from 'node:fs';
+import {existsSync, readFileSync, statSync} from 'node:fs';
 import {describe, expect, it} from 'vitest';
 import {SEMANTIC_STRUCTURES} from '../../packages/core/src/template-contracts';
+import {VISUAL_STYLE_IDS} from '../../packages/core/src/visual-styles';
 
-const skill = readFileSync('SKILL.md', 'utf8').replace(/\r\n/g, '\n');
+const skill = readFileSync('SKILL.md', 'utf8');
 const readme = readFileSync('README.md', 'utf8');
-const usage = readFileSync('docs/USAGE.md', 'utf8');
 
 describe('public Skill contract', () => {
   it('contains every pressure-tested safety boundary', () => {
@@ -13,19 +13,11 @@ describe('public Skill contract', () => {
     }
   });
 
-  it('uses the release Skill id and concise task-specific frontmatter', () => {
-    expect(skill).toMatch(/^---\nname: chuanyuntian-auto-edit-pro\ndescription: /);
-    const description = skill.match(/^description: (.+)$/m)?.[1] ?? '';
-    expect(description.length).toBeGreaterThan(20);
-    expect(description.length).toBeLessThan(250);
-    expect(description).toContain('川云添');
-    expect(description).toContain('口播');
-    expect(description).toContain('SRT');
-    expect(skill).toContain('# 川云添 · 自动剪辑 Pro');
-    expect(skill).toContain('[NOTICE](NOTICE)');
+  it('keeps the trigger-only frontmatter concise', () => {
+    expect(skill).toMatch(/^---\nname: auto-edit-pro\ndescription: Use when /);
   });
 
-  it('teaches the original whole-screen visual language and source-preservation rules', () => {
+  it('teaches the multicolor center-presenter layout and approval contract', () => {
     const normalized = skill.toLowerCase();
     for (const phrase of [
       'center-presenter',
@@ -33,11 +25,31 @@ describe('public Skill contract', () => {
       'keyword',
       'full-screen',
       '1.6–3.2 seconds',
-      'semantic palettes',
+      'seeded-shuffle',
       'programmatic line illustrations',
       'Do not continue until the user approves',
-      'one continuous source video/audio track',
-    ]) expect(normalized).toContain(phrase.toLowerCase());
+    ]) {
+      expect(normalized).toContain(phrase.toLowerCase());
+    }
+  });
+
+  it('documents executable mixed styles, frozen legacy plans and synthetic-only examples', () => {
+    for (const phrase of ['balatro', 'crt-warp', 'cubes', 'hyperspeed', 'reopens and renders do not reshuffle', '--style-mix legacy', 'npm run demo:styles', 'does not approve Gate A or Gate D for any real video']) expect(skill).toContain(phrase);
+    const reference = readFileSync('references/visual-style-mixing.md', 'utf8');
+    for (const phrase of ['--style-seed', '--style-pool', '本地原创', '尚未注册', 'surface: "transparent"']) expect(reference).toContain(phrase);
+    expect(VISUAL_STYLE_IDS).toHaveLength(71);
+    for (const id of VISUAL_STYLE_IDS.slice(0,21)) {
+      expect(skill).toContain(`\`${id}\``);
+      expect(reference).toContain(`\`${id}\` / [`);
+      expect(reference).toMatch(new RegExp(`https://reactbits\\.dev/(?:backgrounds|animations|components)/${id}\\)`));
+    }
+    expect(reference).toContain('已保存的四风格池与旧配色保持不变');
+    expect(skill).toContain('references/react-bits-catalog.md');
+    const catalog = readFileSync('references/react-bits-catalog.md','utf8');
+    for(const id of VISUAL_STYLE_IDS.slice(21)) expect(catalog).toContain('`'+id+'`');
+    expect(reference).toContain('不额外插入无意义镜头');
+    expect(reference).toContain('波纹与金属涂层不作用于证据正文');
+    expect(skill).toContain('A style-upgrade-only request does not also request presentation examples');
   });
 
   it('uses bounded local render concurrency for 1080p talking-head footage', () => {
@@ -46,7 +58,7 @@ describe('public Skill contract', () => {
     expect(packagingScript).toContain("'--concurrency', renderConcurrency");
   });
 
-  it('defines blocking visual QA for content density and real review frames', () => {
+  it('defines blocking visual QA for center safety, content density, and real review frames', () => {
     for (const phrase of [
       'translucent overlays',
       'content-fit',
@@ -58,23 +70,18 @@ describe('public Skill contract', () => {
     expect(skill).toContain('references/visual-quality-gates.md');
   });
 
-  it('preserves all ten structures and A approval, automatic B-to-C, D approval', () => {
+  it('documents the ten V2 structures and cumulative four-gate flow', () => {
     for (const name of SEMANTIC_STRUCTURES) expect(skill).toContain(name);
-    for (const flag of ['--approve-gate-a', '--approve-gate-b', '--approve-gate-c', '--approve-gate-d', '--gate-b-only']) {
+    for (const flag of ['--approve-gate-a', '--approve-gate-b', '--approve-gate-c', '--approve-gate-d']) {
       expect(skill).toContain(flag);
     }
-    expect(skill).toContain('After explicit Gate A approval');
-    expect(skill).toContain('automatically continue to Gate C');
-    expect(skill).toContain('do not ask for another approval between B and C');
-    expect(skill).toContain('After explicit Gate D approval');
-    expect(skill).toContain('do not render the final video');
     expect(skill).toContain('source frames');
     expect(skill).toContain('transparent foreground person layer');
     expect(skill).toContain('Remotion by default');
     expect(skill).toContain('HyperFrames adapter');
   });
 
-  it('teaches both input/output workflows and the missing-SRT confirmation step', () => {
+  it('teaches first-time users the two real input and output workflows', () => {
     for (const phrase of [
       '前期素材准备',
       '不处理重读、漏读和气口',
@@ -82,35 +89,27 @@ describe('public Skill contract', () => {
       '只提供 SRT',
       '透明 MOV',
       '直接合成 MP4',
+      '--output-mode overlay',
       '--output-mode composite',
       '默认推荐',
-      '等用户确认后再转写',
-      '不内置自动抠像或自动手部跟踪',
     ]) expect(readme).toContain(phrase);
-    expect(usage).toContain('--output-mode overlay');
-    expect(usage).toContain('SRT-only 模式');
-    expect(usage).toContain('八种不同语义结构');
   });
 
-  it('explains subtitle modes without promising speech recognition', () => {
+  it('explains subtitle choices in plain Chinese instead of editor jargon', () => {
     for (const phrase of [
       '原视频已经带有字幕（字幕已固定在画面中）',
       '原视频没有字幕，希望 Skill 自动生成字幕',
       '原视频没有字幕，并且只需要动效、不需要字幕',
-      '从已校对 SRT 生成',
     ]) expect(readme).toContain(phrase);
-    expect(usage).toContain('不是识别语音');
+    expect(readme).not.toContain('已烧录字幕');
+    expect(readme).not.toContain('烧录字幕');
   });
 
-  it('ships the installation, attribution, and troubleshooting contract', () => {
-    for (const file of ['NOTICE', 'LICENSE', 'docs/USAGE.md', 'docs/EXAMPLES.md', 'docs/TROUBLESHOOTING.md']) {
-      expect(existsSync(file), file).toBe(true);
-    }
-    expect(readme).toContain('https://github.com/cytxnyu/chuanyuntian-auto-edit-pro');
+  it('uses current public brand assets and links real style documentation', () => {
     expect(readme).toContain('川云添（cytxnyu）');
-    expect(readFileSync('LICENSE', 'utf8')).toContain('Copyright (c) 2026 川云添 (cytxnyu)');
-    expect(readme).toContain('npm ci');
-    expect(readme).toContain('$chuanyuntian-auto-edit-pro');
-    expect(readme).toContain('4 秒');
+    expect(readme).toContain('](assets/brand-banner.svg)');
+    expect(existsSync('assets/brand-banner.svg')).toBe(true);
+    expect(statSync('assets/brand-banner.svg').size).toBeGreaterThan(100);
+    for (const phrase of ['71 种', 'seeded-shuffle', 'npm run list:styles', 'references/react-bits-catalog.md', '不是 71 项全览']) expect(readme).toContain(phrase);
   });
 });

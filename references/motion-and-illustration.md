@@ -8,7 +8,9 @@
 - Use `route` and `trace` for actual paths, loops, and staged progress.
 - Use `count` only for attributed metrics.
 - Use `focus` for a selected command, source, or proof detail.
-- Never use timers, random values, runtime state, or CSS transitions that depend on playback history.
+- Never use timers, wall-clock time, live unseeded randomness, runtime state, or CSS transitions that depend on playback history. Seeded planning and fixed seeded decorative parameters are allowed; evaluate their visible motion from frame/fps without consuming a stateful random stream while rendering.
+
+Mixed-style surface animation follows [visual-style-mixing.md](visual-style-mixing.md). A style does not replace a semantic route, diagram or gesture with unrelated background motion.
 
 ## Semantic doodle contract
 

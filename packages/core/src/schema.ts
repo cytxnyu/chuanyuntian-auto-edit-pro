@@ -1,6 +1,7 @@
 import {z} from 'zod';
 import {PALETTE_IDS} from './palettes';
 import {SEMANTIC_STRUCTURES, TemplateContentSchema} from './template-contracts';
+import {StyleMixSchema, VisualStyleSchema} from './visual-styles';
 
 export {PALETTE_IDS} from './palettes';
 export {SEMANTIC_STRUCTURES} from './template-contracts';
@@ -103,6 +104,7 @@ const beatSchema = z.object({
   placement: z.enum(['left', 'right', 'full']),
   stage: StageSchema.optional(),
   palette: z.enum(PALETTE_IDS),
+  visualStyle: VisualStyleSchema.optional(),
   directorRole: z.enum(DIRECTOR_ROLES),
   reason: z.string().trim().min(1).max(120).optional(),
   evidence: z
@@ -128,6 +130,7 @@ const beatSchema = z.object({
 export const StoryboardSchema = z.object({
   version: z.literal('2.0'),
   presentation: z.literal('whole-screen-stage').optional(),
+  styleMix: StyleMixSchema.optional(),
   id: z.string().regex(/^[a-z0-9-]+$/),
   title: z.string().min(1),
   duration: z.number().positive(),
@@ -142,6 +145,8 @@ export const StoryboardSchema = z.object({
   const sourceFrames = Math.ceil(storyboard.duration * storyboard.fps);
   if (storyboard.source.subject && storyboard.source.subject.frameCount < sourceFrames) context.addIssue({code: 'custom', path: ['source', 'subject', 'frameCount'], message: 'Subject sequence must align to and cover the full source frame span'});
   storyboard.beats.forEach((beat, index) => {
+    if (beat.visualStyle && !beat.stage) context.addIssue({code: 'custom', path: ['beats', index, 'visualStyle'], message: 'Visual styles require a stage envelope'});
+    if (storyboard.styleMix && (!beat.visualStyle || !storyboard.styleMix.pool.includes(beat.visualStyle.id))) context.addIssue({code: 'custom', path: ['beats', index, 'visualStyle'], message: 'Every mixed-style beat must use a style from the saved pool'});
     const stage = beat.stage;
     if (stage) {
       const localFrames = Math.max(1, Math.round((beat.end - beat.start) * storyboard.fps));
@@ -198,3 +203,5 @@ export type DirectorRole = (typeof DIRECTOR_ROLES)[number];
 export type Stage = z.infer<typeof StageSchema>;
 export type StageKeyframe = z.infer<typeof stageKeyframeSchema>;
 export type SubjectSequence = z.infer<typeof SubjectSequenceSchema>;
+export type {VisualStyle, VisualStyleId, StyleMix} from './visual-styles';
+

@@ -1,13 +1,14 @@
 import {buildTemplateContent} from './content-builders';
-import {paletteForRole} from './palettes';
+import {PALETTES, paletteForRole} from './palettes';
 import {StoryboardSchema, type Storyboard, type StoryboardBeat} from './schema';
 import {chooseDirectorRole, chooseIllustration, classifySemanticStructure, motionsForStructure} from './semantic-rules';
 import type {SemanticStructure} from './template-contracts';
 import type {MediaProbe, SrtCue} from './types';
+import {deriveStyleSeed, seededStyleAssignments, validateStyleOptions, VISUAL_STYLE_IDS, type StyleMix, type StyleOptions} from './visual-styles';
 
 type PlannerEvidence = {src: string; label: string; sourceUrl?: string};
 
-type PlannerInput = {
+type PlannerInput = StyleOptions & {
   id: string;
   title: string;
   cues: SrtCue[];
@@ -130,8 +131,7 @@ const splitLongVisualCue = (cue: SrtCue): SrtCue[] => {
   ];
 };
 
-// Only the presentation envelope changes. Original templates, palette choice, copy,
-// director roles and cue timing below remain the original 0.2.0 pipeline.
+// Presentation and visual style are independent of semantic content and cue timing.
 const stageForBeat = (beat: StoryboardBeat, fps: number): NonNullable<StoryboardBeat['stage']> => {
   const geometry = beat.directorRole === 'hook' ? {x: .03, y: .05, width: .94, height: .73}
     : beat.structure === 'before-after-scrub' || beat.structure === 'evidence-panel' ? {x: .01, y: .04, width: .98, height: .75}
@@ -154,10 +154,15 @@ const stageForBeat = (beat: StoryboardBeat, fps: number): NonNullable<Storyboard
 };
 
 export const planStoryboard = (input: PlannerInput): Storyboard => {
+  validateStyleOptions(input);
   if (input.cues.length === 0) throw new Error('At least one SRT cue is required');
   const beats: StoryboardBeat[] = [];
   const fps = Math.round(input.probe.video.fps || 30);
   const stageEnabled = input.presentation !== 'legacy';
+  if (!stageEnabled && (input.styleMix === 'seeded-shuffle' || input.styleSeed !== undefined || input.stylePool !== undefined)) throw new Error('Visual style mixing requires whole-screen-stage presentation');
+  const styleMix: StyleMix | undefined = stageEnabled && input.styleMix !== 'legacy'
+    ? {mode: 'seeded-shuffle', seed: input.styleSeed ?? deriveStyleSeed(input.id), pool: input.stylePool ?? [...VISUAL_STYLE_IDS]}
+    : undefined;
   let lastSide: 'left' | 'right' = 'right';
   mergeVisualCues(input.cues).flatMap(splitLongVisualCue).forEach((cue, index) => {
     const beat = makeBeat(cue, index, lastSide, input.evidenceByCue?.[cue.index]);
@@ -165,9 +170,18 @@ export const planStoryboard = (input: PlannerInput): Storyboard => {
     beats.push(beat);
     if (beat.placement === 'left' || beat.placement === 'right') lastSide = beat.placement;
   });
+  if (styleMix) {
+    const assignments = seededStyleAssignments(beats.length, styleMix);
+    beats.forEach((beat, index) => {
+      beat.visualStyle = {id: assignments[index], seed: deriveStyleSeed(`${styleMix.seed}:${beat.id}`), intensity: beat.directorRole === 'evidence' || beat.directorRole === 'data' || beat.structure === 'evidence-panel' || beat.structure === 'metric-odometer' ? .25 : .65};
+      beat.palette = assignments[index];
+    });
+  }
+  const firstPalette = styleMix ? PALETTES[beats[0].palette] : undefined;
   return StoryboardSchema.parse({
     version: '2.0',
     ...(stageEnabled ? {presentation: 'whole-screen-stage'} : {}),
+    ...(styleMix ? {styleMix} : {}),
     id: input.id,
     title: input.title,
     duration: Number(input.probe.duration.toFixed(3)),
@@ -176,7 +190,7 @@ export const planStoryboard = (input: PlannerInput): Storyboard => {
     height: input.probe.video.height,
     captionsMode: input.captionsMode,
     source: {video: input.sourceVideo, ...(input.sourceSrt ? {srt: input.sourceSrt} : {})},
-    theme: {background: '#07111f', foreground: '#f6f8fb', accent: '#5eead4'},
+    theme: firstPalette ? {background: firstPalette.canvas, foreground: firstPalette.foreground, accent: firstPalette.accent} : {background: '#07111f', foreground: '#f6f8fb', accent: '#5eead4'},
     beats,
   });
 };

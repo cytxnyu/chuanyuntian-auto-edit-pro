@@ -4,13 +4,13 @@ These checks apply to every real invocation. Passing unit tests, typecheck, buil
 
 ## 1. Intentional whole-screen presentation
 
-Judge the composition, not whether it protects a fixed center lane. Large foreground graphics, translucent face overlap, opaque full-screen, a clear presenter surrounded by graphics, and front/behind crossings are permitted. A beat can move between these states. Preserve established component aesthetics; do not mechanically cycle treatments.
+Judge the composition, not whether it protects a fixed center lane. Large foreground graphics, translucent face overlap, opaque full-screen, a clear presenter surrounded by graphics, and front/behind crossings are permitted. A beat can move between these states. The persisted seeded style pool may vary material and atmosphere; coverage and interaction still need a deliberate reason.
 
 Record the purpose and reveal timing of coverage. Real gesture interaction uses observed source frames. Behind-subject effects use aligned transparent person frames; inspect matte edges and depth-order transitions. A merely translucent source duplicate does not pass as depth interaction.
 
 ## 2. Content-fit at any scale
 
-There is no fixed maximum card height or side-only rule. Keep headings, items and takeaways readable and intentionally related; remove decorative empty regions. Big components can cross the center or leave the frame during motion, but their intended reading state must be legible. Preserve established palettes and component identities.
+There is no fixed maximum card height or side-only rule. Keep headings, items and takeaways readable and intentionally related; remove decorative empty regions. Big components can cross the center or leave the frame during motion, but their intended reading state must be legible. Preserve semantic component identities, not an obligatory original palette. Keep surface effects behind text and evidence; check all four mixed looks rather than only a calm frame.
 
 ## 3. Subtitle / keyword handoff
 
@@ -23,7 +23,7 @@ Representative stills are selected at 72% of each beat, after the main entry ani
 Gate C must include:
 
 1. eight frames from eight distinct semantic structures when the video semantics support them;
-2. the exact timestamp, structure, presentation mode, and SHA-256 for every frame;
+2. the exact timestamp, structure, presentation mode, visual-style ID/seed when present, and SHA-256 for every frame;
 3. a 4×2 contact sheet built from those exact frames;
 4. inspect stage interaction entry, contact, depth switch and exit frames in addition to stable frames; review a short motion excerpt for these interactions;
 5. manual frame review, recorded as pass/fail for intentional occlusion, observed gesture alignment, matte edges, density, clipping, contrast, semantic fit, and subtitle/keyword continuity.
@@ -39,6 +39,7 @@ Any of the following blocks Gate D:
 - content clipped, overlapping, or too small to read;
 - screenshot captured before the composition reaches a stable readable state;
 - structure selected for visual variety rather than spoken meaning;
+- an unpersisted or live-random effect changes on repeated seeks, or a surface effect indiscriminately replaces the source background/captions;
 - evidence treated as decoration or an illustration treated as proof;
 - any manual review item left unchecked.
 

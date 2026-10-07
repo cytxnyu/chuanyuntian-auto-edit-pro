@@ -10,9 +10,9 @@ const basicStage: Stage = {x: .1, y: .1, width: .8, height: .68, depth: 'front',
 const fixture = (): Storyboard => planStoryboard({...input, presentation: 'legacy'});
 const staged = (): Storyboard => {const sb = fixture(); sb.presentation = 'whole-screen-stage'; sb.beats[0].stage = structuredClone(basicStage); return sb;};
 
-describe('additive whole-screen stage without aesthetic replacement', () => {
-  it('preserves original palettes, templates, copy, motions, placement and cue timing', () => {
-    const legacy = fixture(); const next = planStoryboard(input);
+describe('additive whole-screen stage with explicit legacy aesthetic', () => {
+  it('preserves original palettes, templates, copy, motions, placement and cue timing in legacy style mode', () => {
+    const legacy = fixture(); const next = planStoryboard({...input, styleMix: 'legacy'});
     const withoutStage = {...next}; delete withoutStage.presentation;
     withoutStage.beats = next.beats.map((b) => {const copy = {...b}; delete copy.stage; return copy;});
     expect(withoutStage).toEqual(legacy);

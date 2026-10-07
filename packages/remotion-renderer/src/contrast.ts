@@ -15,3 +15,4 @@ export const contrastRatio = (foreground: string, background: string): number =>
   const [lighter, darker] = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
   return (lighter + 0.05) / (darker + 0.05);
 };
+

@@ -9,6 +9,7 @@ import {planStoryboard} from '../packages/core/src/planner';
 import {probeMedia} from '../packages/core/src/probe';
 import {gateABrief, storyboardMarkdown} from '../packages/core/src/reports';
 import {parseSrt} from '../packages/core/src/srt';
+import {parseStyleCliOptions} from '../packages/core/src/visual-styles';
 import {generateHyperFramesProject} from '../packages/hyperframes-adapter/src/generate';
 import {buildContactSheet, decodeEntireFile, detectBlackFrames, extractRepresentativeFrames, frameEvidenceFromFile, selectRepresentativeBeats, writeRenderManifest} from './lib/artifact-qa';
 import {approvedGate, requireCumulativeApprovals, requireRenderAuthorization, type Args} from './lib/gates';
@@ -51,6 +52,8 @@ const ensurePreviewMedia = (source: string, destination: string, codec: string, 
 
 export const main = (argv = process.argv.slice(2)): void => {
   const args = parseArgs(argv);
+  const styleOptions = parseStyleCliOptions(args);
+  const hasStyleOverrides = ['style-mix', 'style-seed', 'style-pool'].some((key) => args[key] !== undefined);
   const srt = resolve(required(args, 'srt'));
   const out = resolve(required(args, 'out'));
   const video = typeof args.video === 'string' ? resolve(args.video) : undefined;
@@ -63,6 +66,7 @@ export const main = (argv = process.argv.slice(2)): void => {
   const renderTimeout = typeof args.timeout === 'string' ? args.timeout : '120000';
   if (!['burned-in', 'none', 'generated'].includes(captionsMode)) throw new Error('Invalid --captions mode');
   if (!['remotion', 'hyperframes'].includes(renderer)) throw new Error('Invalid --renderer');
+  if (renderer === 'hyperframes' && (styleOptions.styleMix === 'seeded-shuffle' || styleOptions.styleSeed !== undefined || styleOptions.stylePool !== undefined)) throw new Error('HyperFrames retains legacy visuals; style mixing requires --renderer remotion');
   if (renderer === 'hyperframes' && outputMode === 'overlay') throw new Error('Overlay MOV output currently requires --renderer remotion');
   if (!/^[1-9]\d*$/.test(renderConcurrency) || Number(renderConcurrency) > 16) throw new Error('Invalid --concurrency; expected an integer from 1 to 16');
   if (!/^[1-9]\d*$/.test(renderTimeout) || Number(renderTimeout) < 7000) throw new Error('Invalid --timeout; expected an integer of at least 7000 milliseconds');
@@ -76,6 +80,7 @@ export const main = (argv = process.argv.slice(2)): void => {
   const gate = approvedGate(args);
   const storyboardFile = typeof args.storyboard === 'string' ? resolve(args.storyboard)
     : gate !== 'A' && existsSync(join(out, 'storyboard.json')) ? join(out, 'storyboard.json') : undefined;
+  if (storyboardFile && hasStyleOverrides) throw new Error('Saved storyboard preserves its visual style choices; remove --style-mix/--style-seed/--style-pool overrides or create a new Gate A plan');
   const previousManifest = join(out, 'input-manifest.json');
   if (gate !== 'A' && existsSync(previousManifest)) {
     const previous = JSON.parse(readFileSync(previousManifest, 'utf8'));
@@ -85,7 +90,7 @@ export const main = (argv = process.argv.slice(2)): void => {
   }
   const id = typeof args.id === 'string' ? args.id : basename(out).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'video-package';
   const storyboard = storyboardFile ? readSavedStoryboard(storyboardFile, {width: probe.video.width, height: probe.video.height, fps: probe.video.fps, duration: probe.duration})
-    : planStoryboard({id, title: typeof args.title === 'string' ? args.title : id, cues, probe, captionsMode: captionsMode as 'burned-in' | 'none' | 'generated', sourceVideo: 'input.mp4', sourceSrt: 'input.srt', presentation: renderer === 'hyperframes' ? 'legacy' : 'whole-screen-stage'});
+    : planStoryboard({id, title: typeof args.title === 'string' ? args.title : id, cues, probe, captionsMode: captionsMode as 'burned-in' | 'none' | 'generated', sourceVideo: 'input.mp4', sourceSrt: 'input.srt', presentation: renderer === 'hyperframes' ? 'legacy' : 'whole-screen-stage', ...styleOptions});
   if (renderer === 'hyperframes' && storyboard.beats.some((beat) => beat.stage)) throw new Error('Whole-screen stage uses Remotion; HyperFrames retains the original legacy layouts');
   if (outputMode === 'overlay' && storyboard.source.subject) throw new Error('A person cutout is a composite layer; export the transparent graphics without source.subject for overlay-only delivery');
   assertDirectorPlan(storyboard);

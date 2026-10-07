@@ -2,6 +2,7 @@ import type {ReactElement} from 'react';
 import {Composition} from 'remotion';
 import type {Storyboard} from '../../core/src/schema';
 import {VideoPackaging, type VideoPackagingProps} from './VideoPackaging';
+import {StyleDemo, STYLE_DEMOS, type StyleDemoIndex} from './StyleDemos';
 
 const defaultStoryboard: Storyboard = {
   version: '2.0',
@@ -31,6 +32,7 @@ const defaultStoryboard: Storyboard = {
 const defaultProps: VideoPackagingProps = {storyboard: defaultStoryboard, overlayOnly: false, cues: []};
 
 export const RemotionRoot = (): ReactElement => (
+  <>
   <Composition
     id="VideoPackaging"
     component={VideoPackaging}
@@ -43,4 +45,7 @@ export const RemotionRoot = (): ReactElement => (
       props,
     })}
   />
+  {STYLE_DEMOS.map((demo, index) => <Composition key={demo.id} id={demo.id} component={StyleDemo}
+    width={1280} height={720} fps={30} durationInFrames={180} defaultProps={{demoIndex: index as StyleDemoIndex}}/>)}
+  </>
 );

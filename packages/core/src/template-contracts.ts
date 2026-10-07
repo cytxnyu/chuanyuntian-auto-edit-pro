@@ -101,3 +101,4 @@ export const TemplateContentSchema = z.discriminatedUnion('structure', [
 
 export type SemanticStructure = (typeof SEMANTIC_STRUCTURES)[number];
 export type TemplateContent = z.infer<typeof TemplateContentSchema>;
+

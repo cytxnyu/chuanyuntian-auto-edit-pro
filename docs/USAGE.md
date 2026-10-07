@@ -12,7 +12,7 @@ cd chuanyuntian-auto-edit-pro
 npm ci
 ```
 
-在 Codex 中安装时将完整仓库放到 `$HOME/.agents/skills/chuanyuntian-auto-edit-pro`，执行 `npm ci` 后新开会话，调用 `$chuanyuntian-auto-edit-pro`。不要只复制入口文档。
+在 Codex 中安装时将完整仓库放到 `$HOME/.agents/skills/auto-edit-pro`，执行 `npm ci` 后新开会话，调用 `$auto-edit-pro`。不要只复制入口文档。
 
 也可让 `$skill-installer` 从本仓库根目录安装，随后进入实际安装目录执行 `npm ci`。不同宿主和旧版本的目录可能不同，以所在环境为准；参见 [Codex 官方 Skills 文档](https://learn.chatgpt.com/docs/build-skills)。
 
@@ -94,15 +94,25 @@ npm run package-video -- --srt "input.srt" --out "run-overlay" --renderer remoti
 
 ## 可选 HyperFrames
 
-HyperFrames 仅保留旧版布局，整屏舞台和 Gate C/D 使用 Remotion。需要可选项目时，在本次方案获批并明确只准备输入后运行：
+HyperFrames 仅支持 legacy 布局与风格，混合风格全屏舞台和 Gate C/D 使用 Remotion。需要可选项目时，先在独立输出目录生成 HyperFrames 的 legacy Gate A 方案；本次方案获批并明确只准备输入后，再执行第二条命令：
 
 ```bash
+npm run package-video -- --video "input.mp4" --srt "input.srt" --out "run-hyperframes" --renderer hyperframes --style-mix legacy --captions burned-in --output-mode composite
+# 本次 Gate A 已获批准后；继续保存方案，不重复传入风格覆盖参数
 npm run package-video -- --video "input.mp4" --srt "input.srt" --out "run-hyperframes" --renderer hyperframes --captions burned-in --output-mode composite --approve-gate-a --approve-gate-b --gate-b-only
 npx hyperframes@0.7.99 lint ./run-hyperframes/hyperframes
 npx hyperframes@0.7.99 check ./run-hyperframes/hyperframes --snapshots
 ```
 
 该输出是可编辑项目，不等于最终视频。切换渲染器时新建输出目录并重新检查方案，避免复用不兼容的舞台配置。
+
+## 可复现视觉风格
+
+新方案默认在 71 种已登记风格中执行 `seeded-shuffle`，语义结构独立按内容确定。用 `npm run list:styles` 浏览目录，或用 `npm run list:styles -- --category components --pool` 获取组件类子池。
+
+新任务 Gate A 可加入 `--style-pool waves,metallic-paint,grid-scan` 限定风格池，或以 `--style-mix legacy` 保留旧审美。实际种子、池和节拍分配存入 storyboard，继续执行同一 RUN 时不重抽；短片不为覆盖整个池而新增无意义节拍。
+
+说明与字段：[视觉风格混合](../references/visual-style-mixing.md) · [扩展目录](../references/react-bits-catalog.md)。
 
 ## 常用运行参数
 

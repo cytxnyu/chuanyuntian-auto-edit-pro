@@ -2,6 +2,7 @@ import type {CSSProperties, ReactElement, ReactNode} from 'react';
 import type {Palette} from '../../../core/src/palettes';
 import {sideLaneStyle} from '../theme';
 import {useStageSurface} from '../stage/context';
+import {styleMaterial} from '../styles';
 
 export const clamp01 = (value: number): number => Math.max(0, Math.min(1, value));
 
@@ -18,18 +19,32 @@ export const typography: CSSProperties = {
   boxSizing: 'border-box',
 };
 
-export const Kicker = ({children, color}: {children: ReactNode; color: string}): ReactElement => (
+export const Kicker = ({children, color}: {children: ReactNode; color: string}): ReactElement => {
+  const stage = useStageSurface();
+  if (stage?.visualStyle) {
+    const material = styleMaterial(stage.visualStyle);
+    return <div data-style-kicker={stage.visualStyle} style={{
+      display: 'flex', alignItems: 'center', gap: 12, fontSize: 18, lineHeight: 1.2, fontWeight: 800,
+      fontFamily: material.fontFamily, letterSpacing: stage.visualStyle === 'crt-warp' ? '.19em' : '.1em', color, textTransform: 'uppercase',
+    }}><span aria-hidden style={{display: 'inline-block', width: stage.visualStyle === 'hyperspeed' ? 40 : 10, height: stage.visualStyle === 'hyperspeed' ? 2 : 10, background: material.accent, transform: stage.visualStyle === 'balatro' ? 'rotate(45deg)' : undefined}}/>{children}</div>;
+  }
+  return (
   <div style={{fontSize: 18, lineHeight: 1, fontWeight: 900, letterSpacing: '0.15em', color, textTransform: 'uppercase'}}>
     {children}
   </div>
-);
+  );
+};
 
-export const EditorialRule = ({progress, color}: {progress: number; color: string}): ReactElement => (
+export const EditorialRule = ({progress, color}: {progress: number; color: string}): ReactElement => {
+  const stage = useStageSurface();
+  if (stage?.visualStyle) return <div data-editorial-rule style={{height: stage.visualStyle === 'cubes' ? 8 : 2, width: `${Math.round(phase(progress, .1, .7) * 100)}%`, background: color}}/>;
+  return (
   <div
     data-editorial-rule
     style={{height: 6, width: `${Math.round(phase(progress, 0.1, 0.7) * 100)}%`, background: color, borderRadius: 999}}
   />
-);
+  );
+};
 
 export const NumberedItem = ({
   index,
@@ -55,12 +70,21 @@ export const NumberedItem = ({
   </div>
 );
 
-export const SourceStamp = ({label, palette}: {label: string; palette: Palette}): ReactElement => (
+export const SourceStamp = ({label, palette}: {label: string; palette: Palette}): ReactElement => {
+  const stage = useStageSurface();
+  if (stage?.visualStyle) {
+    const material = styleMaterial(stage.visualStyle);
+    return <div data-style-source={stage.visualStyle} style={{display: 'inline-flex', alignItems: 'center', gap: 9, padding: '8px 12px', borderRadius: material.radius / 3, background: `${palette.canvas}cc`, border: `1px solid ${palette.line}77`, color: palette.foreground, fontSize: 15, fontWeight: 700, fontFamily: material.fontFamily}}>
+      <span aria-hidden style={{width: 5, height: 12, background: palette.accent}}/>{label}
+    </div>;
+  }
+  return (
   <div style={{display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 11px', borderRadius: 999, background: palette.card, border: `1px solid ${palette.line}88`, color: palette.foreground, fontSize: 15, fontWeight: 850}}>
     <span style={{width: 8, height: 8, borderRadius: 99, background: palette.line}}/>
     {label}
   </div>
-);
+  );
+};
 
 export const SideSurface = ({
   side,
@@ -74,19 +98,21 @@ export const SideSurface = ({
   progress?: number;
 }): ReactElement => {
   const stage = useStageSurface();
+  const material = stage?.visualStyle ? styleMaterial(stage.visualStyle) : undefined;
   if (stage) return (
     <section data-stage-surface={side} data-density-mode="stage-content" style={{
       ...typography, position: 'absolute', top: 0, bottom: 0, isolation: 'isolate',
       left: stage.dualRail && side === 'right' ? '52%' : 0,
       width: stage.dualRail ? '48%' : '100%', padding: '38px 36px',
-      borderRadius: 26, overflow: 'hidden', color: palette.foreground,
+      borderRadius: material?.radius ?? 26, overflow: 'hidden', color: palette.foreground,
+      ...(material ? {fontFamily: material.fontFamily, letterSpacing: material.letterSpacing} : {}),
       opacity: .08 + clamp01(progress) * .92,
     }}>
       {stage.surface !== 'transparent' ? <div aria-hidden style={{
-        position: 'absolute', inset: 0, zIndex: -1, borderRadius: 26,
+        position: 'absolute', inset: 0, zIndex: -1, borderRadius: material?.radius ?? 26,
         background: stage.surface === 'opaque' ? palette.canvas : palette.surface,
-        opacity: stage.surfaceOpacity, border: `1px solid ${palette.line}77`,
-        boxShadow: `0 26px 70px ${palette.canvas}88`,
+        opacity: stage.surfaceOpacity * (material ? .70 : 1), border: `${material?.borderWidth ?? 1}px solid ${palette.line}77`,
+        boxShadow: material?.shadow ?? `0 26px 70px ${palette.canvas}88`,
       }}/> : null}
       {children}
     </section>
@@ -124,12 +150,14 @@ export const FullScreenSurface = ({
   children: ReactNode;
 }): ReactElement => {
   const stage = useStageSurface();
+  const material = stage?.visualStyle ? styleMaterial(stage.visualStyle) : undefined;
   if (stage) return (
     <section data-full-screen-mode="whole-screen-stage" data-stage-surface={stage.surface} style={{
       ...typography, position: 'absolute', inset: 0, overflow: 'hidden', color: palette.foreground,
+      ...(material ? {fontFamily: material.fontFamily, letterSpacing: material.letterSpacing} : {}),
     }}>
       {stage.surface !== 'transparent' && (mode === 'opaque' || stage.surface === 'opaque') ? <div aria-hidden style={{
-        position: 'absolute', inset: 0, opacity: stage.surfaceOpacity,
+        position: 'absolute', inset: 0, opacity: stage.surfaceOpacity * (material ? .35 : 1),
         background: `linear-gradient(145deg, ${palette.canvas} 0%, ${palette.surface} 100%)`,
       }}/> : null}
       <div style={{position: 'absolute', inset: 0}}>{children}</div>

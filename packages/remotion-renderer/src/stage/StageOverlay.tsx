@@ -5,10 +5,15 @@ import {PALETTES} from '../../../core/src/palettes';
 import {illustrationRegistry} from '../illustrations';
 import {structureRegistry} from '../structures';
 import {typography} from '../structures/shared';
+import {StyleBackdrop, styleMaterial} from '../styles';
 import {StageContext} from './context';
 import {resolveStageFrame, stageSubtitleClip, stageViewport} from './model';
 
 type Beat = Storyboard['beats'][number];
+export const structureProgress = (frame: number, duration: number, fps: number, styled: boolean): number => {
+  const settle = styled ? Math.min(duration - 1, fps * Math.min(3, duration / fps * .8)) : duration - 1;
+  return Math.max(0, Math.min(1, frame / Math.max(1, settle)));
+};
 export const StageOverlay = ({beat}: {beat: Beat}): ReactElement => {
   const frame = useCurrentFrame();
   const {width, height, fps} = useVideoConfig();
@@ -18,7 +23,10 @@ export const StageOverlay = ({beat}: {beat: Beat}): ReactElement => {
   const physicalHeight = pose.height * height;
   const viewport = stageViewport(beat.structure, beat.placement, physicalWidth, physicalHeight);
   const duration = Math.max(1, Math.round((beat.end - beat.start) * fps));
-  const progress = Math.max(0, Math.min(1, frame / Math.max(1, duration - 1)));
+  // Preserve multi-step meaning: progress advances for up to three seconds, then
+  // holds a readable completed state. Stage keyframes own the short entrance.
+  const progress = structureProgress(frame, duration, fps, Boolean(beat.visualStyle));
+  const material = beat.visualStyle ? styleMaterial(beat.visualStyle.id) : undefined;
   const Structure = structureRegistry[beat.structure].Component;
   const Illustration = beat.illustration ? illustrationRegistry[beat.illustration.type] : undefined;
   return <AbsoluteFill data-beat={beat.id} data-stage-depth={pose.depth} style={{clipPath: stageSubtitleClip(stage, frame)}}>
@@ -27,8 +35,14 @@ export const StageOverlay = ({beat}: {beat: Beat}): ReactElement => {
       width: physicalWidth, height: physicalHeight, opacity: pose.opacity,
       transform: `rotate(${pose.rotation}deg) scale(${pose.scale})`, transformOrigin: '50% 50%',
     }}>
-      <div style={{position: 'absolute', width: viewport.width, height: viewport.height, transform: `scale(${viewport.fit})`, transformOrigin: '0 0'}}>
-        <StageContext.Provider value={{surface: stage.surface, surfaceOpacity: pose.surfaceOpacity, dualRail: beat.structure === 'editorial-dual-rail'}}>
+      <div data-stage-visual-style={beat.visualStyle?.id} style={{position: 'absolute', width: viewport.width, height: viewport.height, transform: `scale(${viewport.fit})`, transformOrigin: '0 0', ...(material ? {overflow: 'hidden', borderRadius: material.radius, isolation: 'isolate'} : {})}}>
+        {beat.visualStyle && material ? <>
+          <style>{`[data-stage-visual-style="${beat.visualStyle.id}"] [data-critical-content] {font-family:${material.fontFamily}!important;letter-spacing:${material.letterSpacing}} [data-stage-visual-style="${beat.visualStyle.id}"] h2 {text-wrap:balance}`}</style>
+          {stage.surface !== 'transparent' ? <div data-stage-effect-bounds="stage-only" style={{position: 'absolute', inset: 0, opacity: pose.surfaceOpacity}}>
+            <StyleBackdrop style={beat.visualStyle} frame={frame} fps={fps} width={viewport.width} height={viewport.height}/>
+          </div> : null}
+        </> : null}
+        <StageContext.Provider value={{surface: stage.surface, surfaceOpacity: pose.surfaceOpacity, dualRail: beat.structure === 'editorial-dual-rail', visualStyle: beat.visualStyle?.id}}>
           <Structure content={beat.content} progress={progress} palette={PALETTES[beat.palette]} placement={beat.placement}
             evidence={beat.evidence ? {...beat.evidence, src: staticFile(beat.evidence.src)} : undefined} Illustration={Illustration}/>
         </StageContext.Provider>

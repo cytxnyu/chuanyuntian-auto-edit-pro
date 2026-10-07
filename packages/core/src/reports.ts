@@ -22,7 +22,8 @@ export const gateABrief = ({storyboard, probe, cues}: {storyboard: Storyboard; p
 - SRT cues: ${cues.length}
 - Captions mode: ${storyboard.captionsMode}
 - Presentation: ${storyboard.presentation ?? 'original V2 layout'}
-- Stage beats: ${storyboard.beats.filter((beat) => beat.stage).length}; original templates and palettes retained
+- Stage beats: ${storyboard.beats.filter((beat) => beat.stage).length}; semantic templates retained
+- Visual style mix: ${storyboard.styleMix ? `${storyboard.styleMix.mode}; seed=${storyboard.styleMix.seed}; pool=${storyboard.styleMix.pool.join(', ')}` : 'legacy; original palettes retained'}
 - Subject cutout: ${storyboard.source.subject ? `${storyboard.source.subject.type}, ${storyboard.source.subject.frameCount} aligned frames; runtime alpha verification required` : 'not supplied; behind-person interactions remain unavailable until actual aligned alpha frames exist'}
 - Gesture observations: ${storyboard.beats.filter((beat) => beat.stage?.gesture).length} beats; speech-only drafts do not claim observed hand actions
 - Planned visual beats: ${storyboard.beats.length}
@@ -36,7 +37,9 @@ Gate A is analysis only. Rendering requires explicit approval for every later ga
 
 export const storyboardMarkdown = (storyboard: Storyboard): string => `# Storyboard
 
-| ID | Time | Structure | Why | Placement / stage | Evidence | Copy |
-|---|---:|---|---|---|---|---|
-${storyboard.beats.map((beat) => `| ${beat.id} | ${beat.start.toFixed(3)}–${beat.end.toFixed(3)} | ${beat.structure} | ${(beat.reason ?? 'Selected from spoken semantics').replaceAll('|', '\\|')} | ${beat.stage ? `stage x=${beat.stage.x}, y=${beat.stage.y}, w=${beat.stage.width}, h=${beat.stage.height}; ${beat.stage.depth}; alpha=${beat.stage.opacity ?? 1}; surface=${beat.stage.surfaceOpacity ?? 1}; ${beat.stage.interaction ?? 'speech'}${beat.stage.coverSubtitles ? '; keyword handoff only during declared cover windows' : ''}` : beat.placement} | ${evidenceStatus(beat).replaceAll('|', '\\|')} | ${beat.text.replaceAll('|', '\\|')} |`).join('\n')}
+- Style mix: ${storyboard.styleMix ? `${storyboard.styleMix.mode}; seed=${storyboard.styleMix.seed}; pool=${storyboard.styleMix.pool.join(', ')}` : 'legacy'}
+
+| ID | Time | Structure | Visual style / seed / intensity | Why | Placement / stage | Evidence | Copy |
+|---|---:|---|---|---|---|---|---|
+${storyboard.beats.map((beat) => `| ${beat.id} | ${beat.start.toFixed(3)}–${beat.end.toFixed(3)} | ${beat.structure} | ${beat.visualStyle ? `${beat.visualStyle.id} / ${beat.visualStyle.seed} / ${beat.visualStyle.intensity}` : `legacy / ${beat.palette}`} | ${(beat.reason ?? 'Selected from spoken semantics').replaceAll('|', '\\|')} | ${beat.stage ? `stage x=${beat.stage.x}, y=${beat.stage.y}, w=${beat.stage.width}, h=${beat.stage.height}; ${beat.stage.depth}; alpha=${beat.stage.opacity ?? 1}; surface=${beat.stage.surfaceOpacity ?? 1}; ${beat.stage.interaction ?? 'speech'}${beat.stage.coverSubtitles ? '; keyword handoff only during declared cover windows' : ''}` : beat.placement} | ${evidenceStatus(beat).replaceAll('|', '\\|')} | ${beat.text.replaceAll('|', '\\|')} |`).join('\n')}
 `;

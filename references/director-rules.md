@@ -6,12 +6,12 @@
 - Change structure when the reasoning changes: claim, proof, loop, command, sequence, comparison, evidence, metric, route, or metaphor.
 - Do not animate every noun. One visual state should carry one meaningful relationship.
 - Avoid more than two consecutive instances of the same structure. Choose scale, position and depth by meaning rather than alternating lanes.
-- A video longer than 30 seconds needs at least eight valid structures; diversity must come from the speech, not random assignment.
+- A video longer than 30 seconds needs at least eight valid structures; structural diversity must come from the speech, not random assignment. The independent visual-style layer may use the persisted seeded shuffle pool.
 
 ## Whole-screen stage
 
 - All canvas positions, including the center and caption area, are available for intentional composition.
-- Retain the established component/palette language. Use large foreground, translucent, opaque, surrounding and depth-crossing treatments when appropriate; a person may be partially or fully covered.
+- Retain each component's semantic contract while applying its assigned visual style. Use large foreground, translucent, opaque, surrounding and depth-crossing treatments when appropriate; a person may be partially or fully covered. Confine decorative effects to component surfaces by default; keep source backgrounds intact.
 - Inspect actual body/hand motion before assigning a gesture-triggered action. Record source frames and the intended contact/response.
 - Use a synchronized transparent person layer for behind-subject effects. Verify hair, fingers, silhouette, alignment and transition frames; do not replace the underlying background.
 - When subtitles are briefly covered, timed readable keywords must carry their meaning; resume readable subtitles afterward.

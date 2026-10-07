@@ -27,3 +27,4 @@ export const renderStructure = (structure: SemanticStructure): string => {
     />,
   );
 };
+

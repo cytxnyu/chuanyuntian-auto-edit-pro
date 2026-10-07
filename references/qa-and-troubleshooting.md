@@ -30,5 +30,9 @@
 - **Subtitle is covered:** check the explicit brief keyword handoff and restoration. Adjust opacity/position or redraw only where needed; fixed bottom margins are not a universal stage constraint.
 - **Black SVG block:** put `fill="none"` directly on open SVG elements; do not rely only on CSS.
 - **Evidence claim without proof:** supply an approved source asset or downgrade to `thesis-and-proof`.
-- **Motion works only during playback:** remove timers, random values, transitions, and runtime state; derive motion from the current frame.
+- **Motion works only during playback:** remove timers, live unseeded randomness, transitions, and runtime state; derive motion from the current frame and persisted seed.
+- **Mixed looks change after reopening:** load the saved `styleMix` and each beat's `visualStyle`; do not rerun the shuffle during Gate B/C/D.
+- **Random style hides meaning:** keep the semantic structure, move the effect behind content, reduce intensity, and inspect the frame again. A new look does not count as a new structure.
+- **Legacy project unexpectedly changes:** leave absent style fields absent. Do not upgrade saved boards automatically. HyperFrames uses legacy style/presentation only.
+- **Component preview mistaken for a finished job:** label `demo:styles` output synthetic, verify the three preview MP4s/stills/gallery, and keep the real video at its current gate.
 - **Build passes but output is wrong:** inspect the actual Gate C stills and Gate D artifact. Build status is not visual proof.

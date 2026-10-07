@@ -14,9 +14,12 @@ describe('public release documentation', () => {
     expect(markdown).toContain('chuanyuntian-auto-edit-pro');
     expect(markdown).toContain(`git clone ${repository}.git`);
     expect(markdown).toContain(`${repository}/issues`);
-    expect(markdown).toContain('$HOME/.agents/skills/chuanyuntian-auto-edit-pro');
+    expect(markdown).toContain('$HOME/.agents/skills/auto-edit-pro');
     expect(markdown).toContain('npm ci');
     expect(markdown).toContain('Node.js 24');
+    expect(markdown).toContain('name: auto-edit-pro');
+    expect(read('agents/openai.yaml')).toContain('$auto-edit-pro');
+    expect(read('SKILL.md')).toMatch(/^---\nname: auto-edit-pro\n/);
     expect(markdown).toContain('https://learn.chatgpt.com/docs/build-skills');
   });
 
@@ -44,7 +47,7 @@ describe('public release documentation', () => {
     const prompt = markdown.match(/```text\n([\s\S]*?)\n```/)?.[1];
     expect(prompt).toBeDefined();
     for (const phrase of [
-      '$chuanyuntian-auto-edit-pro', 'input.mp4', 'input.srt',
+      '$auto-edit-pro', 'input.mp4', 'input.srt',
       '保留完整原片、原声、背景、顺序和速度', '等我确认后再补齐',
       '本次先做 Gate A', '完成 Gate B 并自动进入 Gate C',
       '等我明确批准 Gate D', '手势互动记录源帧',
@@ -75,6 +78,10 @@ describe('public release documentation', () => {
     expect(read('scripts/make-synthetic.ts')).toContain('duration=4');
     expect(read('examples/synthetic-horizontal/input.srt')).toContain('00:00:04,000');
     expect(read('README.md')).toContain('八种不同语义结构');
+    expect(read('README.md')).toContain('71 种');
+    expect(read('README.md')).toContain('不是 71 项全览');
+    expect(pkg.scripts['list:styles']).toContain('scripts/list-styles.ts');
+    expect(pkg.scripts['demo:styles']).toContain('scripts/demo-styles.ts');
   });
 
   it('keeps project-facing branding consistent and retains required notices in the license', () => {

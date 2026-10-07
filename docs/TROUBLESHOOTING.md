@@ -4,7 +4,7 @@
 
 ## 助手没有识别到 Skill
 
-确认完整仓库位于助手的 Skills 目录，目录名为 `chuanyuntian-auto-edit-pro`，其中保留 `SKILL.md`、`references/`、`scripts/` 和 `packages/`。在仓库目录执行 `npm ci` 后新开会话，并使用 `$chuanyuntian-auto-edit-pro` 调用；只复制一个 Markdown 文件不足以运行。
+确认完整仓库位于助手的 Skills 目录，安装目录可名为 `auto-edit-pro`，实际触发名为 `auto-edit-pro`，其中保留 `SKILL.md`、`references/`、`scripts/` 和 `packages/`。在仓库目录执行 `npm ci` 后新开会话，并使用 `$auto-edit-pro` 调用；只复制一个 Markdown 文件不足以运行。
 
 ## 找不到 ffmpeg 或 ffprobe
 
@@ -68,7 +68,7 @@ CLI 会创建连续的 H.264/AAC 制作代理，保留原顺序和时间轴，�
 
 ## HyperFrames 与全屏舞台配置不兼容
 
-当前 HyperFrames 适配器保留旧版布局；全屏舞台与 Gate C/D 走 Remotion。切换渲染器时使用新的输出目录并重新检查方案。可选项目依赖固定 GSAP CDN 构建，离线使用需准备对应本地脚本并验证实际加载。
+当前 HyperFrames 适配器仅支持 legacy 布局与风格；混合风格全屏舞台与 Gate C/D 走 Remotion。切换渲染器时使用新的输出目录并重新检查方案。可选项目依赖固定 GSAP CDN 构建，离线使用需准备对应本地脚本并验证实际加载。
 
 ## 反馈问题需要哪些内容
 

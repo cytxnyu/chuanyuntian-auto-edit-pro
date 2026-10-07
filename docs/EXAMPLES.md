@@ -37,3 +37,7 @@ npm run example:synthetic
 参考 [README 中的可复制提示词](../README.md)。准备同一剪辑版本的视频和 SRT；没有 SRT 时先确认转写与校对方案。使用新的输出目录，按照 Gate A → B 自动 C → Gate D 的批准流程工作。
 
 如需分享自己的效果，请先完成真实输出验收，再公开必要的截图、命令、媒体参数和输出哈希；不要把未渲染工程或合成测试图称为真实成片案例。
+
+## 可选合成风格演示
+
+只有明确要求查看组件演示时才运行 `npm run demo:styles -- --out DEMO_DIR`。它生成三个既有组件 MP4、静帧与画廊，只覆盖原始四种风格，不是 71 项全览，也不代表真人视频获批。查看全部风格名称使用 `npm run list:styles`；目录见[视觉风格混合](../references/visual-style-mixing.md)。
